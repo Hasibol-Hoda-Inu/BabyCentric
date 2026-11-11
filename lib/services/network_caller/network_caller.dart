@@ -77,11 +77,7 @@ class NetworkCaller {
     }
   }
 
-  Future<NetworkResponse> postRequest(
-    String url, {
-    String? accessToken,
-    Map<String, dynamic>? body,
-  }) async {
+  Future<NetworkResponse> postRequest(String url, {String? accessToken, Map<String, dynamic>? body}) async {
     try {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {"content-type": "application/json"};
@@ -131,10 +127,7 @@ class NetworkCaller {
     }
   }
 
-  Future<NetworkResponse> deleteRequest(
-    String url, {
-    String? accessToken,
-  }) async {
+  Future<NetworkResponse> deleteRequest(String url, {String? accessToken}) async {
     try {
       Uri uri = Uri.parse(url);
       Map<String, String> headers = {"content-type": "application/json"};
@@ -180,11 +173,7 @@ class NetworkCaller {
     }
   }
 
-  void _logRequest(
-    String url, [
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? body,
-  ]) {
+  void _logRequest(String url, [Map<String, dynamic>? headers, Map<String, dynamic>? body]) {
     _logger.i("URL => $url\nHEADER => $headers\nBODY => $body");
   }
 
