@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:craftybay/features/checkout/serivices/stripe_payment_gateway/key_constants.dart';
-import 'package:craftybay/features/checkout/ui/screens/thank_you_screen.dart';
+
+import 'package:BabyCentric/features/checkout/serivices/stripe_payment_gateway/key_constants.dart';
+import 'package:BabyCentric/features/checkout/ui/screens/thank_you_screen.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripePaymentGateway extends GetxController {
-
   String secret_key = s_key; // TODO: Replace with your secret key
   Map<String, dynamic>? paymentIntent;
   bool _inProgress = false;
@@ -38,14 +38,16 @@ class StripePaymentGateway extends GetxController {
       _inProgress = false;
       update();
       await displayPaymentSheet();
-
     } catch (e) {
       log('Error during payment process: ${e.toString()}');
       // Handle error appropriately, e.g., show error message to user
     }
   }
 
-  Future<Map<String, dynamic>?> createPaymentIntent(String amount, String currency) async {
+  Future<Map<String, dynamic>?> createPaymentIntent(
+    String amount,
+    String currency,
+  ) async {
     try {
       Map<String, dynamic> body = {
         'currency': currency,
@@ -65,7 +67,9 @@ class StripePaymentGateway extends GetxController {
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
-        log('Failed to create Payment Intent. Status Code: ${response.statusCode}, Body: ${response.body}');
+        log(
+          'Failed to create Payment Intent. Status Code: ${response.statusCode}, Body: ${response.body}',
+        );
         return null; // Indicate failure
       }
     } catch (e) {
@@ -82,9 +86,10 @@ class StripePaymentGateway extends GetxController {
 
       Get.offNamed(ThankYouScreen.name);
 
-      log('Payment Sheet presented and payment completed successfully (if user completed it).');
+      log(
+        'Payment Sheet presented and payment completed successfully (if user completed it).',
+      );
       paymentIntent = null;
-
     } catch (e) {
       log('Stripe Platform Exception: ${e.toString()}');
     }

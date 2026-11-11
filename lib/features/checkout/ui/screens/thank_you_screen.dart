@@ -1,15 +1,12 @@
-import 'package:craftybay/features/common/ui/controllers/main_bottom_nav_controller.dart';
-import 'package:craftybay/features/common/ui/screens/main_bottom_nav_screen.dart';
+import 'package:BabyCentric/features/common/ui/controllers/main_bottom_nav_controller.dart';
+import 'package:BabyCentric/features/common/ui/screens/main_bottom_nav_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThankYouScreen extends StatelessWidget {
   static const String name = "/thank-you-screen";
 
-  const ThankYouScreen({
-    super.key,
-    this.orderId
-  });
+  const ThankYouScreen({super.key, this.orderId});
   final String? orderId;
 
   @override
@@ -18,7 +15,9 @@ class ThankYouScreen extends StatelessWidget {
       backgroundColor: Colors.white, // Pure white background for lightness
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(32.0), // Generous padding around content
+          padding: const EdgeInsets.all(
+            32.0,
+          ), // Generous padding around content
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +32,7 @@ class ThankYouScreen extends StatelessWidget {
                 "Thank You!",
                 style: TextStyle(
                   fontSize: 32.0,
-                  fontWeight: FontWeight.bold,// Deep, sophisticated grey
+                  fontWeight: FontWeight.bold, // Deep, sophisticated grey
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -45,12 +44,10 @@ class ThankYouScreen extends StatelessWidget {
               ),
               const SizedBox(height: 48.0),
               ElevatedButton(
-                onPressed: (){
+                onPressed: () {
                   _onPop();
                 },
-                child: const Text(
-                  "Continue Shopping",
-                ),
+                child: const Text("Continue Shopping"),
               ),
             ],
           ),
@@ -58,7 +55,8 @@ class ThankYouScreen extends StatelessWidget {
       ),
     );
   }
-  void _onPop(){
+
+  void _onPop() {
     Get.find<MainBottomNavController>().backToHome();
     Get.offNamed(MainBottomNavScreen.name);
   }

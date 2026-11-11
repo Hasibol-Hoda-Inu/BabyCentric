@@ -1,10 +1,10 @@
-import 'package:craftybay/features/review/data/models/review_list_model.dart';
+import 'package:BabyCentric/features/review/data/models/review_list_model.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
 import '../../../../services/network_caller/network_caller.dart';
 
-class ReviewListController extends GetxController{
+class ReviewListController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -14,26 +14,25 @@ class ReviewListController extends GetxController{
   List<Results> _results = [];
   List<Results> get results => _results;
 
-  Future<bool> getReviewList(String productId)async{
+  Future<bool> getReviewList(String productId) async {
     bool isSuccess = false;
     _inProgress = true;
     update();
 
-    Map<String, dynamic> queryParams = {
-      "product" : productId,
-    };
+    Map<String, dynamic> queryParams = {"product": productId};
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
       Urls.reviewsUrl,
       queryParams: queryParams,
     );
-    if(response.isSuccess){
+    if (response.isSuccess) {
       isSuccess = true;
       _errorMessage = null;
 
-      final ReviewListModel reviewListModel = ReviewListModel.fromJson(response.responseData);
+      final ReviewListModel reviewListModel = ReviewListModel.fromJson(
+        response.responseData,
+      );
       _results = reviewListModel.data?.results ?? [];
-
-    }else{
+    } else {
       isSuccess = false;
       _errorMessage = response.errorMessage;
     }
@@ -42,4 +41,3 @@ class ReviewListController extends GetxController{
     return isSuccess;
   }
 }
-

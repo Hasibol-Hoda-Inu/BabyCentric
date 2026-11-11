@@ -1,8 +1,8 @@
-import 'package:craftybay/features/auth/data/models/profile_model.dart';
-import 'package:craftybay/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
+import '../../../../services/network_caller/network_caller.dart';
+import '../../data/models/profile_model.dart';
 
 class ReadProfileController extends GetxController{
   bool _inProgress = false;

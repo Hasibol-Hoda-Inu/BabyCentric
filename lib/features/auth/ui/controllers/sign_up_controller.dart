@@ -1,7 +1,7 @@
-import 'package:craftybay/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
+import '../../../../services/network_caller/network_caller.dart';
 
 class SignUpController extends GetxController{
   bool _inProgress = false;

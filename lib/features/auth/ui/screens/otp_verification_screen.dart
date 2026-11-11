@@ -1,14 +1,14 @@
-import 'package:craftybay/application/app_colors.dart';
-import 'package:craftybay/features/auth/ui/controllers/sign_in_controller.dart';
-import 'package:craftybay/features/auth/ui/controllers/otp_verification_controller.dart';
-import 'package:craftybay/features/auth/ui/screens/sign_in_screen.dart';
-import 'package:craftybay/features/auth/ui/controllers/timer_controller.dart';
-import 'package:craftybay/features/common/ui/widgets/centered_circular_progress_indicator.dart';
-import 'package:craftybay/features/common/ui/widgets/show_snackbar_message.dart';
+import 'package:BabyCentric/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../../application/app_colors.dart';
+import '../../../common/ui/widgets/centered_circular_progress_indicator.dart';
+import '../../../common/ui/widgets/show_snackbar_message.dart';
+import '../controllers/otp_verification_controller.dart';
+import '../controllers/sign_in_controller.dart';
+import '../controllers/timer_controller.dart';
 import '../widgets/app_icon_widget.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class OtpVerificationScreen extends StatefulWidget {
 }
 
 class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
-  final TextEditingController _otpTEController = TextEditingController();
+  final PinInputController _otpController = PinInputController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TimerController _timerController = Get.find<TimerController>();
@@ -54,39 +54,43 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
               Text("Enter OTP Code", style: Theme.of(context).textTheme.titleLarge ,),
               Text("A 4 digit OTP code has been sent", style: Theme.of(context).textTheme.bodyLarge,),
               const SizedBox(height: 24,),
+
               Form(
                 key: _formKey,
-                child: PinCodeTextField(
+                child: MaterialPinFormField(
                   length: 4,
+                  pinController: _otpController,
                   obscureText: false,
-                  animationType: AnimationType.fade,
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
+                  keyboardType: TextInputType.number,
+                  enableAutofill: true,
+                  autofillHints: const [AutofillHints.oneTimeCode],
+                  theme: MaterialPinTheme(
+                    shape: MaterialPinShape.outlined,
                     borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 50,
-                    fieldWidth: 40,
-                    activeFillColor: Colors.transparent,
-                    activeColor: AppColors.themeColor,
-                    inactiveFillColor: Colors.transparent,
-                    inactiveColor: AppColors.themeColor,
-                    selectedFillColor: Colors.transparent,
+                    cellSize: const Size(40, 50),
+                    spacing: 8,
+                    borderColor: AppColors.themeColor,
+                    focusedBorderColor: AppColors.themeColor,
+                    filledBorderColor: AppColors.themeColor,
+                    completeBorderColor: AppColors.themeColor,
+                    fillColor: Colors.transparent,
+                    focusedFillColor: Colors.transparent,
+                    filledFillColor: Colors.transparent,
+                    cursorColor: AppColors.themeColor,
+                    entryAnimation: MaterialPinAnimation.fade,
+                    animationDuration: const Duration(
+                      milliseconds: 300,
+                    ),
                   ),
-                  animationDuration: const Duration(milliseconds: 300),
-                  cursorColor: AppColors.themeColor,
-                  backgroundColor: Colors.transparent,
-                  enableActiveFill: true,
-                  controller: _otpTEController,
-                  validator: (String? value){
-                    if(value?.length !=4){
-                      return "Enter your otp";
+                  validator: (String? value) {
+                    if (value == null || value.length != 4) {
+                      return 'Enter your OTP';
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
-                  onCompleted: (v) {
-                    debugPrint("Completed");
+                  onCompleted: (String pin) {
+                    debugPrint('OTP entry completed');
                   },
-                  appContext: (context),
                 ),
               ),
               const SizedBox(height: 24,),
@@ -148,7 +152,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   }
 
   Future<void> _getOtpVerification()async {
-    final bool isSuccess = await _otpVController.verifyOtp(widget.email, _otpTEController.text);
+    final bool isSuccess = await _otpVController.verifyOtp(widget.email, _otpController.text);
     if(isSuccess){
       _timerController.startTimer();
       if(mounted){

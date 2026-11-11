@@ -1,12 +1,10 @@
-import 'package:craftybay/services/network_caller/network_caller.dart';
+import 'package:BabyCentric/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
 import '../../../common/data/models/product_pagination_model/product_pagination_model.dart';
 
-
-class ProductListByNewController extends GetxController{
-  
+class ProductListByNewController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
   bool get initialInProgress => _page == 1 && _inProgress;
@@ -21,10 +19,10 @@ class ProductListByNewController extends GetxController{
 
   final List<ProductItemModel> _productListModel = [];
   List<ProductItemModel> get productList => _productListModel;
-  
-  Future<bool> getNewProductList()async{
+
+  Future<bool> getNewProductList() async {
     _page++;
-    if(_lastPage != null && _page > _lastPage!) return false;
+    if (_lastPage != null && _page > _lastPage!) return false;
 
     bool isSuccess = false;
     _inProgress = true;
@@ -37,21 +35,22 @@ class ProductListByNewController extends GetxController{
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-        Urls.productListByRemarksList,
-        queryParams: queryParams
+      Urls.productListByRemarksList,
+      queryParams: queryParams,
     );
-    if(response.isSuccess){
-    isSuccess = true;
-    _errorMessage = null;
+    if (response.isSuccess) {
+      isSuccess = true;
+      _errorMessage = null;
 
-    ProductPaginationModel paginationModel = ProductPaginationModel.fromJson(response.responseData);
-    _productListModel.addAll(paginationModel.data?.results ?? []);
+      ProductPaginationModel paginationModel = ProductPaginationModel.fromJson(
+        response.responseData,
+      );
+      _productListModel.addAll(paginationModel.data?.results ?? []);
 
-    if(paginationModel.data?.lastPage != null){
-      _lastPage = paginationModel.data!.lastPage!;
-    }
-
-    }else{
+      if (paginationModel.data?.lastPage != null) {
+        _lastPage = paginationModel.data!.lastPage!;
+      }
+    } else {
       isSuccess = false;
       _errorMessage = response.errorMessage;
     }

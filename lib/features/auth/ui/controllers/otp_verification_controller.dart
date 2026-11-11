@@ -1,9 +1,9 @@
-import 'package:craftybay/features/common/ui/controllers/auth_controller.dart';
-import 'package:craftybay/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../application/urls.dart';
+import '../../../../services/network_caller/network_caller.dart';
+import '../../../common/ui/controllers/auth_controller.dart';
 import '../../data/models/sign_in_model.dart';
 
 class OtpVerificationController extends GetxController{

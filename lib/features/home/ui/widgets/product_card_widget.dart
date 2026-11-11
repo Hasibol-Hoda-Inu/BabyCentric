@@ -1,8 +1,8 @@
-import 'package:craftybay/features/common/data/models/product_pagination_model/product_pagination_model.dart';
-import 'package:craftybay/features/common/ui/controllers/auth_controller.dart';
-import 'package:craftybay/features/common/ui/widgets/centered_circular_progress_indicator.dart';
-import 'package:craftybay/features/product/ui/controller/add_to_wishlist_controller.dart';
-import 'package:craftybay/features/product/ui/screens/product_details_screen.dart';
+import 'package:BabyCentric/features/common/data/models/product_pagination_model/product_pagination_model.dart';
+import 'package:BabyCentric/features/common/ui/controllers/auth_controller.dart';
+import 'package:BabyCentric/features/common/ui/widgets/centered_circular_progress_indicator.dart';
+import 'package:BabyCentric/features/product/ui/controller/add_to_wishlist_controller.dart';
+import 'package:BabyCentric/features/product/ui/screens/product_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,10 +11,7 @@ import '../../../auth/ui/screens/sign_up_screen.dart';
 import '../../../common/ui/widgets/show_snackbar_message.dart';
 
 class ProductCardWidget extends StatefulWidget {
-  const ProductCardWidget({
-    super.key,
-    required this.productModel,
-  });
+  const ProductCardWidget({super.key, required this.productModel});
 
   final ProductItemModel productModel;
 
@@ -24,16 +21,17 @@ class ProductCardWidget extends StatefulWidget {
 
 class _ProductCardWidgetState extends State<ProductCardWidget> {
   final AuthController _auth = Get.find<AuthController>();
-  final AddToWishlistController _wishlistController = Get.find<AddToWishlistController>();
+  final AddToWishlistController _wishlistController =
+      Get.find<AddToWishlistController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, ProductDetailsScreen.name,
-            arguments: {
-          "productList": widget.productModel
-            }
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          ProductDetailsScreen.name,
+          arguments: {"productList": widget.productModel},
         );
       },
       child: SizedBox(
@@ -47,11 +45,11 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
               Container(
                 height: 100,
                 decoration: BoxDecoration(
-                    color: AppColors.themeColor.withValues(alpha: 0.2),
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8)
-                    )
+                  color: AppColors.themeColor.withValues(alpha: 0.2),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
                 ),
                 child: Image.network(
                   (widget.productModel.photos?.isNotEmpty ?? false)
@@ -63,30 +61,37 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.productModel.title ?? "",
+                    Text(
+                      widget.productModel.title ?? "",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                     Row(
                       spacing: 6,
                       children: [
-                        Text("\$${widget.productModel.currentPrice ?? ""}",
+                        Text(
+                          "\$${widget.productModel.currentPrice ?? ""}",
                           style: const TextStyle(
-                          color: AppColors.themeColor,
-                          fontWeight: FontWeight.w700,
-                        ),),
+                            color: AppColors.themeColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                         Wrap(
-                           children: [
-                             const Icon(Icons.star_rounded, color: Colors.amber, size: 20,),
-                             Text("${widget.productModel.quantity ?? ""}",
-                             ),
+                          children: [
+                            const Icon(
+                              Icons.star_rounded,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
+                            Text("${widget.productModel.quantity ?? ""}"),
                           ],
                         ),
                         InkWell(
@@ -99,38 +104,57 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                             ),
                             child: GetBuilder<AddToWishlistController>(
                               builder: (controller) {
-                                if(controller.isDeleting(widget.productModel.sId ?? "")){
-                                  return const SizedBox(width: 14, height: 14, child: CenteredCircularProgressIndicator());
+                                if (controller.isDeleting(
+                                  widget.productModel.sId ?? "",
+                                )) {
+                                  return const SizedBox(
+                                    width: 14,
+                                    height: 14,
+                                    child: CenteredCircularProgressIndicator(),
+                                  );
                                 }
-                                return const Icon(Icons.favorite_border_rounded, color: Colors.white, size: 14,);
-                              }
+                                return const Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Colors.white,
+                                  size: 14,
+                                );
+                              },
                             ),
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
   }
-  Future<void> _addToWishList()async {
+
+  Future<void> _addToWishList() async {
     bool loggedIn = await _auth.isUserLoggedIn();
-    if(loggedIn){
-      bool result = await _wishlistController.postAddToWishlist(_auth.accessToken!, widget.productModel.sId ?? "");
-      if(result && mounted){
+    if (loggedIn) {
+      bool result = await _wishlistController.postAddToWishlist(
+        _auth.accessToken!,
+        widget.productModel.sId ?? "",
+      );
+      if (result && mounted) {
         showSnackBarMessage(context, "Successfully Added!");
-      }else{
-        if(mounted){
-          showSnackBarMessage(context, _wishlistController.errorMessage ?? "Something went wrong, Please try again", false);
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+            context,
+            _wishlistController.errorMessage ??
+                "Something went wrong, Please try again",
+            false,
+          );
         }
       }
-    }else{
-      if(mounted){
+    } else {
+      if (mounted) {
         Navigator.pushNamed(context, SignUpScreen.name);
       }
     }

@@ -1,12 +1,10 @@
-import 'package:craftybay/services/network_caller/network_caller.dart';
+import 'package:BabyCentric/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
 import '../../data/models/product_pagination_model/product_pagination_model.dart';
 
-
-class ProductListByCategoryController extends GetxController{
-  
+class ProductListByCategoryController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
   bool get initialInProgress => _page == 1 && _inProgress;
@@ -21,10 +19,10 @@ class ProductListByCategoryController extends GetxController{
 
   final List<ProductItemModel> _productListModel = [];
   List<ProductItemModel> get productList => _productListModel;
-  
-  Future<bool> getProductListByCategoryId()async{
+
+  Future<bool> getProductListByCategoryId() async {
     _page++;
-    if(_lastPage != null && _page > _lastPage!) return false;
+    if (_lastPage != null && _page > _lastPage!) return false;
 
     bool isSuccess = false;
     _inProgress = true;
@@ -37,18 +35,18 @@ class ProductListByCategoryController extends GetxController{
     };
 
     final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
-        Urls.productListByRemarksList,
-      queryParams: queryParams
-
+      Urls.productListByRemarksList,
+      queryParams: queryParams,
     );
-    if(response.isSuccess){
-    isSuccess = true;
-    _errorMessage = null;
+    if (response.isSuccess) {
+      isSuccess = true;
+      _errorMessage = null;
 
-    ProductPaginationModel paginationModel = ProductPaginationModel.fromJson(response.responseData);
-    _productListModel.addAll(paginationModel.data?.results ?? []);
-
-    }else{
+      ProductPaginationModel paginationModel = ProductPaginationModel.fromJson(
+        response.responseData,
+      );
+      _productListModel.addAll(paginationModel.data?.results ?? []);
+    } else {
       isSuccess = false;
       _errorMessage = response.errorMessage;
     }

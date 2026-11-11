@@ -1,16 +1,16 @@
-import 'package:craftybay/features/auth/ui/controllers/sign_in_controller.dart';
-import 'package:craftybay/features/auth/ui/widgets/app_icon_widget.dart';
-import 'package:craftybay/features/auth/utils/regex_validators.dart';
-import 'package:craftybay/features/cart/ui/screens/cart_screen.dart';
-import 'package:craftybay/features/common/ui/widgets/centered_circular_progress_indicator.dart';
-import 'package:craftybay/features/common/ui/widgets/show_snackbar_message.dart';
-import 'package:craftybay/features/product/ui/controller/product_id_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../cart/ui/screens/cart_screen.dart';
 import '../../../common/ui/controllers/auth_controller.dart';
 import '../../../common/ui/screens/main_bottom_nav_screen.dart';
+import '../../../common/ui/widgets/centered_circular_progress_indicator.dart';
+import '../../../common/ui/widgets/show_snackbar_message.dart';
 import '../../../product/ui/controller/add_to_cart_controller.dart';
+import '../../../product/ui/controller/product_id_controller.dart';
+import '../../utils/regex_validators.dart';
+import '../controllers/sign_in_controller.dart';
+import '../widgets/app_icon_widget.dart';
 import 'sign_up_screen.dart';
 
 
@@ -115,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
   }
 
-Future<void> _getVerifyEmailAddress()async {
+  Future<void> _getVerifyEmailAddress()async {
   final bool isSuccess = await _emailVController.signIn(
       _emailTEController.text.trim(),
       _passwordController.text
@@ -153,7 +153,6 @@ Future<void> _getVerifyEmailAddress()async {
       }
     }
   }
-
 
   @override
   void dispose() {

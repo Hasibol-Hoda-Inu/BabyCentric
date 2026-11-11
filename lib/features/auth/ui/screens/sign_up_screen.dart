@@ -1,15 +1,15 @@
-import 'package:craftybay/features/auth/ui/controllers/sign_up_controller.dart';
-import 'package:craftybay/features/auth/ui/screens/otp_verification_screen.dart';
-import 'package:craftybay/features/auth/ui/screens/sign_in_screen.dart';
-import 'package:craftybay/features/auth/utils/regex_validators.dart';
-import 'package:craftybay/features/common/ui/screens/main_bottom_nav_screen.dart';
-import 'package:craftybay/features/common/ui/widgets/centered_circular_progress_indicator.dart';
+import 'package:BabyCentric/features/auth/ui/screens/sign_in_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../common/ui/screens/main_bottom_nav_screen.dart';
+import '../../../common/ui/widgets/centered_circular_progress_indicator.dart';
 import '../../../common/ui/widgets/show_snackbar_message.dart';
+import '../../utils/regex_validators.dart';
+import '../controllers/sign_up_controller.dart';
 import '../widgets/app_icon_widget.dart';
+import 'otp_verification_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String name = "/CompleteProfileScreen";

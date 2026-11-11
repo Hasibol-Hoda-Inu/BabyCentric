@@ -1,10 +1,10 @@
-import 'package:craftybay/features/common/data/models/category_pagination_model/category_pagination_model.dart';
-import 'package:craftybay/services/network_caller/network_caller.dart';
+import 'package:BabyCentric/features/common/data/models/category_pagination_model/category_pagination_model.dart';
+import 'package:BabyCentric/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
 
-class CategoryListController extends GetxController{
+class CategoryListController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
   bool get initialInProgress => _page == 1 && inProgress;
@@ -19,35 +19,32 @@ class CategoryListController extends GetxController{
   final List<CategoryItemModel> _categoryList = [];
   List<CategoryItemModel> get categoryList => _categoryList;
 
-  Future<bool> getCategoryList()async{
+  Future<bool> getCategoryList() async {
     _page++;
-    if(_lastPage != null && _page > _lastPage!)return false;
+    if (_lastPage != null && _page > _lastPage!) return false;
 
     bool isSuccess = false;
     _inProgress = true;
     update();
 
-    Map<String, dynamic> queryParams = {
-      "count": _count,
-      "page": _page,
-    };
+    Map<String, dynamic> queryParams = {"count": _count, "page": _page};
     NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
       Urls.categoryList,
       queryParams: queryParams,
     );
 
-    if(response.isSuccess){
+    if (response.isSuccess) {
       isSuccess = true;
       _errorMessage = null;
 
-      CategoryPaginationModel paginationModel = CategoryPaginationModel.fromJson(response.responseData);
+      CategoryPaginationModel paginationModel =
+          CategoryPaginationModel.fromJson(response.responseData);
       _categoryList.addAll(paginationModel.data?.results ?? []);
 
-      if(paginationModel.data?.lastPage != null){
+      if (paginationModel.data?.lastPage != null) {
         _lastPage = paginationModel.data!.lastPage!;
       }
-
-    }else{
+    } else {
       isSuccess = false;
       _errorMessage = response.errorMessage;
     }
@@ -56,7 +53,7 @@ class CategoryListController extends GetxController{
     return isSuccess;
   }
 
-  Future<bool> refreshCategoryList()async {
+  Future<bool> refreshCategoryList() async {
     _page = 0;
     _lastPage = null;
     _categoryList.clear();

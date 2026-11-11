@@ -1,11 +1,10 @@
-import 'package:craftybay/features/cart/data/models/cart_item_list_data_model.dart';
-import 'package:craftybay/services/network_caller/network_caller.dart';
+import 'package:BabyCentric/features/cart/data/models/cart_item_list_data_model.dart';
+import 'package:BabyCentric/services/network_caller/network_caller.dart';
 import 'package:get/get.dart';
 
 import '../../../../application/urls.dart';
 
-class CartListController extends GetxController{
-
+class CartListController extends GetxController {
   bool _inProgress = false;
   bool get inProgress => _inProgress;
 
@@ -17,7 +16,7 @@ class CartListController extends GetxController{
   final List<Results> _cartItemList = [];
   List<Results> get cartItemList => _cartItemList;
 
-  Future<bool> getCartList(String token)async{
+  Future<bool> getCartList(String token) async {
     bool isSuccess = false;
     _inProgress = true;
     _cartItemList.clear();
@@ -27,15 +26,14 @@ class CartListController extends GetxController{
       Urls.cartListUrl,
       accessToken: token,
     );
-    if(response.isSuccess){
+    if (response.isSuccess) {
       isSuccess = true;
       _errorMessage = null;
 
-      CartItemListDataModel cartItemListDataModel = CartItemListDataModel.fromJson(response.responseData);
+      CartItemListDataModel cartItemListDataModel =
+          CartItemListDataModel.fromJson(response.responseData);
       _cartItemList.addAll(cartItemListDataModel.data?.results ?? []);
-
-
-    }else{
+    } else {
       isSuccess = false;
       _errorMessage = response.errorMessage;
     }
@@ -51,5 +49,4 @@ class CartListController extends GetxController{
       return sum + (price * quantity);
     });
   }
-
 }
